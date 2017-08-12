@@ -74,7 +74,7 @@ impl PoloniexApi {
 
     fn block_or_continue(&self) {
         let threshold = 167; // 6 requests/sec = 1/6*1000
-        let delay = helpers::get_unix_timestamp_ms() - self.last_request;
+        let delay = helpers::get_unix_timestamp_microsec() - self.last_request;
         if delay < threshold {
             let duration_ms = Duration::from_millis(delay as u64);
             thread::sleep(duration_ms);
@@ -95,7 +95,7 @@ impl PoloniexApi {
             Ok(response) => response,
             Err(err) => return Err(ErrorKind::ServiceUnavailable(err.to_string()).into()),
         };
-        self.last_request = helpers::get_unix_timestamp_ms();
+        self.last_request = helpers::get_unix_timestamp_microsec();
         let mut buffer = String::new();
         response.read_to_string(&mut buffer)?;
         utils::deserialize_json(&buffer)
@@ -105,7 +105,7 @@ impl PoloniexApi {
                      method: &str,
                      params: &HashMap<&str, &str>)
                      -> Result<Map<String, Value>> {
-        let unix_timestamp = helpers::get_unix_timestamp_ms().to_string();
+        let unix_timestamp = helpers::get_unix_timestamp_microsec().to_string();
         let mut post_params = params.clone();
         post_params.insert("command", method);
         post_params.insert("nonce", &unix_timestamp);
@@ -132,7 +132,7 @@ impl PoloniexApi {
             Ok(response) => response,
             Err(err) => return Err(ErrorKind::ServiceUnavailable(err.to_string()).into()),
         };
-        self.last_request = helpers::get_unix_timestamp_ms();
+        self.last_request = helpers::get_unix_timestamp_microsec();
 
         let mut buffer = String::new();
         response.read_to_string(&mut buffer)?;

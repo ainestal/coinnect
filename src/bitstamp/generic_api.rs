@@ -21,7 +21,7 @@ impl ExchangeApi for BitstampApi {
         let vol = helpers::from_json_bigdecimal(&result["volume"], "volume")?;
 
         Ok(Ticker {
-               timestamp: helpers::get_unix_timestamp_ms(),
+               timestamp: helpers::get_unix_timestamp_microsec(),
                pair: pair,
                last_trade_price: price,
                lowest_ask: ask,
@@ -63,7 +63,7 @@ impl ExchangeApi for BitstampApi {
         }
 
         Ok(Orderbook {
-            timestamp: helpers::get_unix_timestamp_ms(),
+            timestamp: helpers::get_unix_timestamp_microsec(),
             pair: pair,
             asks: ask_offers,
             bids: bid_offers,
@@ -103,7 +103,7 @@ impl ExchangeApi for BitstampApi {
         };
 
         Ok(OrderInfo {
-               timestamp: helpers::get_unix_timestamp_ms(),
+               timestamp: helpers::get_unix_timestamp_microsec(),
                identifier: vec![result?["id"]
                                     .as_str()
                                     .ok_or_else(|| {

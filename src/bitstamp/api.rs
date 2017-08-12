@@ -82,7 +82,7 @@ impl BitstampApi {
 
         utils::block_or_continue(self.last_request);
         let mut response = self.http_client.get(&url).send()?;
-        self.last_request = helpers::get_unix_timestamp_ms();
+        self.last_request = helpers::get_unix_timestamp_microsec();
         let mut buffer = String::new();
         response.read_to_string(&mut buffer)?;
         utils::deserialize_json(&buffer)

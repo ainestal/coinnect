@@ -29,7 +29,7 @@ impl ExchangeApi for PoloniexApi {
         let vol = helpers::from_json_bigdecimal(&result[*pair_name]["quoteVolume"], "quoteVolume")?;
 
         Ok(Ticker {
-               timestamp: helpers::get_unix_timestamp_ms(),
+               timestamp: helpers::get_unix_timestamp_microsec(),
                pair: pair,
                last_trade_price: price,
                lowest_ask: ask,
@@ -76,7 +76,7 @@ impl ExchangeApi for PoloniexApi {
         }
 
         Ok(Orderbook {
-               timestamp: helpers::get_unix_timestamp_ms(),
+               timestamp: helpers::get_unix_timestamp_microsec(),
                pair: pair,
                asks: ask_offers,
                bids: bid_offers,
@@ -124,7 +124,7 @@ impl ExchangeApi for PoloniexApi {
         let result = utils::parse_result(&raw_response)?;
 
         Ok(OrderInfo {
-               timestamp: helpers::get_unix_timestamp_ms(),
+               timestamp: helpers::get_unix_timestamp_microsec(),
                identifier: vec![result["orderNumber"]
                                     .as_f64()
                                     .ok_or_else(|| {

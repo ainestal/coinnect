@@ -43,7 +43,7 @@ pub fn get_pair_enum(pair: &str) -> Option<&Pair> {
 
 pub fn block_or_continue(last_request: i64) {
     let threshold = 1000; // 600 requests per 10 mins = 1 request per second
-    let delay = helpers::get_unix_timestamp_ms() - last_request;
+    let delay = helpers::get_unix_timestamp_microsec() - last_request;
     if delay < threshold {
         let duration_ms = Duration::from_millis(delay as u64);
         thread::sleep(duration_ms);
@@ -93,7 +93,7 @@ pub fn deserialize_json(json_string: &str) -> Result<Map<String, Value>> {
 pub fn generate_nonce(fixed_nonce: Option<String>) -> String {
     match fixed_nonce {
         Some(v) => v,
-        None => helpers::get_unix_timestamp_ms().to_string(),
+        None => helpers::get_unix_timestamp_microsec().to_string(),
     }
 }
 

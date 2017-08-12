@@ -23,10 +23,11 @@ pub fn url_encode_hashmap(hashmap: &HashMap<&str, &str>) -> String {
     acc
 }
 
-pub fn get_unix_timestamp_ms() -> i64 {
+pub fn get_unix_timestamp_microsec() -> i64 {
     let now = Utc::now();
     let seconds: i64 = now.timestamp();
     let nanoseconds: i64 = now.nanosecond() as i64;
+    // Use a precision of microseconds: the millionth of a second
     (seconds * 1000 * 1000) + (nanoseconds / 1000)
 }
 

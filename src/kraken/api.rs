@@ -80,7 +80,7 @@ impl KrakenApi {
 
     fn block_or_continue(&self) {
         let threshold = 2000; // 1 request/2sec
-        let delay = helpers::get_unix_timestamp_ms() - self.last_request;
+        let delay = helpers::get_unix_timestamp_microsec() - self.last_request;
         if delay < threshold {
             let duration_ms = Duration::from_millis(delay as u64);
             thread::sleep(duration_ms);
@@ -101,7 +101,7 @@ impl KrakenApi {
             Ok(response) => response,
             Err(err) => return Err(ErrorKind::ServiceUnavailable(err.to_string()).into()),
         };
-        self.last_request = helpers::get_unix_timestamp_ms();
+        self.last_request = helpers::get_unix_timestamp_microsec();
         let mut buffer = String::new();
         response.read_to_string(&mut buffer)?;
         utils::deserialize_json(&buffer)
@@ -115,7 +115,7 @@ impl KrakenApi {
 
         let urlpath = "/0/private/".to_string() + method;
 
-        let nonce = helpers::get_unix_timestamp_ms().to_string();
+        let nonce = helpers::get_unix_timestamp_microsec().to_string();
         helpers::strip_empties(&mut params);
 
         let mut params = params.clone(); // TODO: Remove .clone()
